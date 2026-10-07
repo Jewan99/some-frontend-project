@@ -1,0 +1,98 @@
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users List</title>
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 40px;
+            font-family: Arial, sans-serif;
+            background-color: #9bd4c7;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 40px;
+            color: #222;
+        }
+
+        #userList {
+            max-width: 1200px;
+            margin: auto;
+
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+        }
+
+        .user-box {
+            background-color: rgb(215, 235, 171);
+            padding: 25px;
+            border-radius: 12px;
+
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+            min-height: 300px;
+        }
+
+        .user-box h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+            color: #333;
+            font-size: 22px;
+        }
+
+        .user-box p {
+            margin: 10px 0;
+            line-height: 1.4;
+            color: #555;
+        }
+
+        .user-box strong {
+            color: #111;
+        }
+
+        @media (max-width: 900px) {
+
+            #userList {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+        }
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 20px;
+            }
+
+            #userList {
+                grid-template-columns: 1fr;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+    <h1>Users List</h1>
+    <div id="userList"></div>
+    <script src="users.js"></script>
+
+</body>
+</html>

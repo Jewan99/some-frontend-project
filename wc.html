@@ -1,0 +1,69 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Next Page</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+      color: #b07a2f;
+      background-color: #4bb4b0;
+    }
+    button {
+      padding: 8px 20px;
+      margin-top: 20px;
+      cursor: pointer;
+      border: none;
+      border-radius: 5px;
+      background-color: #c0392b;
+      color: white;
+      font-weight: bold;
+    }
+    button:hover {
+      background-color: #922b21;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <h1>Welcome !</h1>
+  </div>
+  <div>
+    <p>Login successful.</p>
+    <p id="welcome">Welcome, guest!</p>
+  </div>
+<br>
+  <div>
+    <button id="logoutBtn">Logout</button>
+  </div>
+</br>
+<br>
+  <div>
+    <input type="button" value="Home" onclick="window.location.href='signup.html'">
+  </div>
+</br>
+  <script>
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+
+    if (currentUser && currentUser.name) {
+      document.getElementById("welcome").textContent = `Welcome, ${currentUser.name}!`;
+    } else {
+      document.getElementById("welcome").textContent = "Welcome, guest!";
+    }
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("currentUser");
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
+
+</html>

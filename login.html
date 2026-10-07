@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>form</title>
+    <style>
+        body {
+            font-family: italic, sans-serif;
+            margin: 15px;
+            background-color: #58b5cc;
+            color:#cf37c8;
+        }
+        form {
+            max-width: 300px;
+            margin: auto;
+        }
+        div {
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 6px;
+            box-sizing: border-box;
+        }
+        #message {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <form id="loginForm" action="#" method="post">
+        <div>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <br>
+        <div>
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <br>
+        <div>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <br>
+        <div>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <br>
+        <div id="message"></div>
+        <br>
+        <div>
+        <input type="submit" value="Login">
+        </div>
+        <br>
+        <div>
+        <input type = "home" value = "Home" onclick = "window.location.href='signup.html'">
+        </div>
+    </form>
+
+    <script src="login.js" defer></script>
+
+</body>
+</html>

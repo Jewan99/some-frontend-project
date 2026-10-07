@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #0d0e0e;
+            text-align: center;
+            margin-top: 50px;
+        }
+        #calculator {
+            display: inline-block;
+            background-color: #393535;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(244, 241, 241, 0.1);
+        }
+        #display {
+            width: 100%;
+            height: 40px;
+            margin-bottom: 10px;
+            text-align: right;
+            padding-right: 10px;
+            font-size: 18px;
+        }
+        button {
+            display: circular;
+            border: none;
+            background-color: #555;
+            color: white;
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            font-size: 18px;
+        }
+        operator-btn {
+            background-color: #f0ad4e;
+            color: rgb(224, 77, 19);
+        }
+    </style>
+</head>
+<body>
+    <div id="calculator">
+        <input id="display" readonly>
+        <div id ="keys">
+        <br>
+        <button onclick="appendToDisplay('7')" class = "operator-btn">7</button>
+        <button onclick="appendToDisplay('8')" class = "operator-btn">8</button>
+        <button onclick="appendToDisplay('9')" class = "operator-btn">9</button>
+        <button onclick="appendToDisplay('/')" class = "operator-btn">/</button>
+        <br>
+        <button onclick="appendToDisplay('4')" class = "operator-btn">4</button>
+        <button onclick="appendToDisplay('5')" class = "operator-btn">5</button>
+        <button onclick="appendToDisplay('6')" class = "operator-btn">6</button>
+        <button onclick="appendToDisplay('*')" class = "operator-btn">*</button>
+        <br>
+        <button onclick="appendToDisplay('1')" class = "operator-btn">1</button>
+        <button onclick="appendToDisplay('2')" class = "operator-btn">2</button>
+        <button onclick="appendToDisplay('3')" class = "operator-btn">3</button>
+        <button onclick="appendToDisplay('-')" class = "operator-btn">-</button>
+        <br>
+        <button onclick="appendToDisplay('0')" class = "operator-btn"   >0</button>
+        <button onclick="appendToDisplay('.')" class = "operator-btn">.</button>
+        <button onclick="calculate()" class = "operator-btn">=</button>
+        <button onclick="appendToDisplay('+')" class = "operator-btn">+</button>
+        <br>
+        <button onclick="clearDisplay()" class = "operator-btn">C</button>
+        </div>
+    </div>
+    <script src="calculator.js"></script>
+</body>
+</html>

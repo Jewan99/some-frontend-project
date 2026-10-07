@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIGNAL — Nova Strike Broadcast Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #0E0F14;
+    --surface: #171A22;
+    --surface-2: #1E212B;
+    --line: #2A2E3A;
+    --signal: #FF5A2B;
+    --signal-dim: #7A3018;
+    --cyan: #4FD8E0;
+    --text: #F2F1ED;
+    --text-muted: #8B8D98;
+    --clip: 14px;
+  }
+ 
+  *{ box-sizing: border-box; margin:0; padding:0; }
+ 
+  html{ scroll-behavior: smooth; }
+ 
+  body{
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+ 
+  h1,h2,h3, .display{
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    line-height: 1.05;
+  }
+ 
+  a{ color: inherit; text-decoration:none; }
+ 
+  .wrap{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+ 
+  header{
+    position: sticky;
+    top:0;
+    z-index: 50;
+    background: rgba(14,15,20,0.9);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line);
+  }
+  .nav-row{
+    display:flex;
+    align-items:center;
+    justify-content: space-between;
+    height: 68px;
+  }
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Barlow Condensed', sans-serif;
+    font-weight:800;
+    font-size: 22px;
+    letter-spacing: 0.02em;
+  }
+  .logo .mark{
+    width: 22px; height: 22px;
+    background: var(--signal);
+    clip-path: polygon(0 0, 100% 0, 100% 65%, 65% 100%, 0 100%);
+    flex-shrink:0;
+  }
+  nav ul{
+    list-style:none;
+    display:flex;
+    gap: 32px;
+  }
+  nav a{
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: 600;
+    transition: color .15s ease;
+  }
+  nav a:hover, nav a.active{ color: var(--text); }
+  nav a.active{ color: var(--signal); }
+ 
+  .viewer-pill{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size: 13px;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+  .dot-live{
+    width:7px; height:7px; border-radius:50%;
+    background: var(--signal);
+    box-shadow: 0 0 0 0 rgba(255,90,43,.6);
+    animation: pulse 1.8s infinite;
+  }
+  @keyframes pulse{
+    0%{ box-shadow: 0 0 0 0 rgba(255,90,43,.55); }
+    70%{ box-shadow: 0 0 0 8px rgba(255,90,43,0); }
+    100%{ box-shadow: 0 0 0 0 rgba(255,90,43,0); }
+  }
+ 
+  .hero{
+    padding: 48px 0 40px;
+  }
+  .hero-grid{
+    display:grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 24px;
+    align-items: stretch;
+  }
+ 
+  .eyebrow-row{
+    display:flex;
+    align-items:center;
+    gap: 12px;
+    margin-bottom: 18px;
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+  .badge-live{
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+    background: var(--signal);
+    color: #14100D;
+    font-weight: 700;
+    font-size: 12px;
+    padding: 4px 10px 4px 8px;
+    clip-path: polygon(8px 0, 100% 0, 100% 100%, 0 100%);
+  }
+  .badge-live .dot{
+    width:6px;height:6px;border-radius:50%;
+    background:#14100D;
+  }
+ 
+  .matchboard{
+    background: linear-gradient(155deg, var(--surface) 0%, var(--surface-2) 100%);
+    border: 1px solid var(--line);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 24px), calc(100% - 24px) 100%, 0 100%);
+    padding: 32px;
+    position: relative;
+    overflow:hidden;
+  }
+  .matchboard::before{
+    content:"";
+    position:absolute;
+    right:-40px; top:-40px;
+    width: 220px; height:220px;
+    background: radial-gradient(circle, rgba(255,90,43,0.16), transparent 70%);
+  }
+ 
+  .match-meta{
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 22px;
+    display:flex;
+    gap: 10px;
+    align-items:center;
+  }
+  .match-meta .game-tag{
+    color: var(--cyan);
+    font-weight: 600;
+  }
+ 
+  .versus{
+    display:grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items:center;
+    gap: 20px;
+  }
+  .team{
+    display:flex;
+    flex-direction:column;
+    gap: 10px;
+  }
+  .team.right{ align-items:flex-end; text-align:right; }
+  .team-emblem{
+    width: 52px; height: 52px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Barlow Condensed';
+    font-weight:800;
+    font-size: 20px;
+    clip-path: polygon(15% 0, 100% 0, 85% 100%, 0% 100%);
+  }
+  .team-name{
+    font-size: 30px;
+    font-family:'Barlow Condensed';
+    font-weight:700;
+  }
+  .team-sub{
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+ 
+  .score-block{
+    display:flex;
+    align-items:center;
+    gap: 18px;
+    font-family:'Barlow Condensed';
+  }
+  .score{
+    font-size: 56px;
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+  }
+  .score.leading{ color: var(--signal); }
+  .score-sep{
+    font-size: 28px;
+    color: var(--text-muted);
+  }
+  .round-tag{
+    font-size: 12px;
+    color: var(--text-muted);
+    text-align:center;
+    margin-top: 6px;
+  }
+ 
+  .map-strip{
+    display:flex;
+    gap: 8px;
+    margin-top: 26px;
+    padding-top: 22px;
+    border-top: 1px solid var(--line);
+  }
+  .map-chip{
+    flex:1;
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 10px 12px;
+    font-size: 12.5px;
+    display:flex;
+    justify-content:space-between;
+  }
+  .map-chip.won{ border-color: var(--signal); }
+  .map-chip .m-score{ color: var(--text-muted); font-variant-numeric: tabular-nums; }
+  .map-chip.won .m-score{ color: var(--signal); font-weight:700; }
+ 
+  /* upcoming side panel */
+  .upcoming{
+    display:flex;
+    flex-direction:column;
+    gap: 12px;
+  }
+  .panel-heading{
+    font-size: 13px;
+    color: var(--text-muted);
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 4px;
+  }
+  .upcoming-item{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 14px 16px;
+    display:flex;
+    flex-direction:column;
+    gap: 6px;
+    flex:1;
+  }
+  .upcoming-item .u-top{
+    display:flex; justify-content:space-between;
+    font-size: 12px; color: var(--text-muted);
+  }
+  .upcoming-item .u-teams{
+    font-family:'Barlow Condensed';
+    font-weight:700;
+    font-size: 18px;
+  }
+  .upcoming-item .u-teams span{ color: var(--text-muted); font-weight:500; font-size:14px; }
+ 
+  section{ padding: 8px 0 56px; }
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items: baseline;
+    margin-bottom: 20px;
+  }
+  .section-head h2{ font-size: 28px; }
+  .section-head .tabs{
+    display:flex; gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 3px;
+  }
+  .section-head .tabs button{
+    font-family:'Manrope';
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    background:transparent;
+    border:none;
+    padding: 6px 14px;
+    cursor:pointer;
+  }
+  .section-head .tabs button.active{
+    background: var(--signal);
+    color: #14100D;
+  }
+ 
+  .content-grid{
+    display:grid;
+    grid-template-columns: 1.6fr 1fr;
+    gap: 24px;
+  }
+ 
+  table{ width:100%; border-collapse: collapse; }
+  .standings{
+    background: var(--surface);
+    border: 1px solid var(--line);
+  }
+  .standings th{
+    text-align:left;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight:600;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--line);
+  }
+  .standings td{
+    padding: 13px 16px;
+    font-size: 14px;
+    border-bottom: 1px solid var(--line);
+  }
+  .standings tr:last-child td{ border-bottom:none; }
+  .standings tr:hover td{ background: rgba(255,255,255,0.02); }
+  .rank-num{
+    font-family:'Barlow Condensed';
+    font-weight:700;
+    font-size: 17px;
+    color: var(--text-muted);
+    width: 30px;
+  }
+  .rank-num.top{ color: var(--signal); }
+  .team-cell{ display:flex; align-items:center; gap: 10px; font-weight:600; }
+  .mini-emblem{
+    width: 26px; height:26px;
+    flex-shrink:0;
+    clip-path: polygon(15% 0, 100% 0, 85% 100%, 0% 100%);
+  }
+  .form-dots{ display:flex; gap:4px; }
+  .form-dot{ width:7px;height:7px;border-radius:50%; }
+  .fd-w{ background: var(--cyan); }
+  .fd-l{ background: var(--line); }
+  .diff-pos{ color: var(--cyan); }
+  .diff-neg{ color: var(--signal); }
+ 
+  .spotlight-card{
+    background: var(--surface);
+    border: 1px solid var(--line);
+    padding: 18px;
+    display:flex;
+    gap: 14px;
+    align-items:flex-start;
+    margin-bottom: 12px;
+  }
+  .spotlight-card:last-child{ margin-bottom:0; }
+  .stream-thumb{
+    width: 88px; height: 60px;
+    flex-shrink:0;
+    background: linear-gradient(135deg, var(--surface-2), var(--bg));
+    border: 1px solid var(--line);
+    position:relative;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .stream-thumb .play{
+    width:0; height:0;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 9px solid var(--text-muted);
+  }
+  .stream-thumb .live-dot{
+    position:absolute; top:5px; left:5px;
+    font-size: 9px;
+    font-weight:700;
+    background: var(--signal);
+    color:#14100D;
+    padding: 1px 5px;
+  }
+  .spotlight-info{ flex:1; }
+  .spotlight-info .s-name{
+    font-family:'Barlow Condensed';
+    font-weight:700;
+    font-size: 18px;
+  }
+  .spotlight-info .s-game{
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+  .spotlight-info .s-viewers{
+    font-size: 12.5px;
+    color: var(--cyan);
+    font-variant-numeric: tabular-nums;
+  }
+ 
+  /* ---------- stat ticker ---------- */
+  .ticker-row{
+    display:grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+  }
+  .ticker-cell{
+    background: var(--surface);
+    padding: 22px 20px;
+  }
+  .ticker-cell .t-num{
+    font-family:'Barlow Condensed';
+    font-weight:800;
+    font-size: 34px;
+    font-variant-numeric: tabular-nums;
+  }
+  .ticker-cell .t-label{
+    font-size: 12.5px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+ 
+  footer{
+    border-top: 1px solid var(--line);
+    padding: 28px 0 40px;
+    font-size: 13px;
+    color: var(--text-muted);
+    display:flex;
+    justify-content:space-between;
+  }
+ 
+  @media (max-width: 860px){
+    nav{ display:none; }
+    .hero-grid{ grid-template-columns: 1fr; }
+    .content-grid{ grid-template-columns: 1fr; }
+    .ticker-row{ grid-template-columns: repeat(2, 1fr); }
+    .versus{ grid-template-columns: 1fr; text-align:center; }
+    .team.right{ align-items:center; text-align:center; }
+    .score-block{ justify-content:center; }
+  }
+ 
+  :focus-visible{
+    outline: 2px solid var(--cyan);
+    outline-offset: 2px;
+  }
+ 
+  @media (prefers-reduced-motion: reduce){
+    .dot-live{ animation:none; }
+    html{ scroll-behavior:auto; }
+  }
+</style>
+</head>
+<body>
+ 
+<header>
+  <div class="wrap nav-row">
+    <div class="logo"><span class="mark"></span>SIGNAL</div>
+    <nav>
+      <ul>
+        <li><a href="#" class="active">Live</a></li>
+        <li><a href="#standings">Standings</a></li>
+        <li><a href="#streams">Streams</a></li>
+        <li><a href="#">Schedule</a></li>
+      </ul>
+    </nav>
+    <div class="viewer-pill"><span class="dot-live"></span><span id="global-viewers">142,880</span> watching now</div>
+  </div>
+</header>
+ 
+<main class="wrap">
+ 
+  <section class="hero">
+    <div class="eyebrow-row">
+      <span class="badge-live"><span class="dot"></span>Live</span>
+      <span>Nova Strike Championship — Grand Final</span>
+    </div>
+ 
+    <div class="hero-grid">
+      <div class="matchboard">
+        <div class="match-meta">
+          <span class="game-tag">NOVA STRIKE</span>
+          <span>·</span>
+          <span>Map 4 — Foundry</span>
+          <span>·</span>
+          <span id="match-clock">14:22 remaining</span>
+        </div>
+ 
+        <div class="versus">
+          <div class="team">
+            <div class="team-emblem" style="background:#3A2E5C;">VX</div>
+            <div class="team-name">Vortex</div>
+            <div class="team-sub">Seed #1 — West Conference</div>
+          </div>
+ 
+          <div class="score-block">
+            <div class="score leading" id="score-a">13</div>
+            <div class="score-sep">—</div>
+            <div class="score" id="score-b">9</div>
+          </div>
+ 
+          <div class="team right">
+            <div class="team-emblem" style="background:#1F4A4D;">AF</div>
+            <div class="team-name">Ashfall</div>
+            <div class="team-sub">Seed #3 — East Conference</div>
+          </div>
+        </div>
+ 
+        <div class="map-strip">
+          <div class="map-chip won"><span>Refinery</span><span class="m-score">13–7</span></div>
+          <div class="map-chip"><span>Undertow</span><span class="m-score">8–13</span></div>
+          <div class="map-chip won"><span>Sable Yard</span><span class="m-score">13–11</span></div>
+          <div class="map-chip"><span>Foundry</span><span class="m-score">In progress</span></div>
+        </div>
+      </div>
+ 
+      <div class="upcoming">
+        <div class="panel-heading">Up next on Signal</div>
+        <div class="upcoming-item">
+          <div class="u-top"><span>Bo3 · Group A</span><span>Today, 19:00</span></div>
+          <div class="u-teams">Cinder <span>vs</span> Glacier</div>
+        </div>
+        <div class="upcoming-item">
+          <div class="u-top"><span>Bo3 · Group B</span><span>Today, 21:30</span></div>
+          <div class="u-teams">Halo Six <span>vs</span> Redline</div>
+        </div>
+        <div class="upcoming-item">
+          <div class="u-top"><span>Bo5 · Consolation</span><span>Tomorrow, 18:00</span></div>
+          <div class="u-teams">Driftwood <span>vs</span> Nightshift</div>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <section id="standings">
+    <div class="section-head">
+      <h2>Conference standings</h2>
+      <div class="tabs">
+        <button class="active" data-region="west">West</button>
+        <button data-region="east">East</button>
+      </div>
+    </div>
+ 
+    <div class="content-grid">
+      <table class="standings">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Team</th>
+            <th>W–L</th>
+            <th>Round diff</th>
+            <th>Form</th>
+          </tr>
+        </thead>
+        <tbody id="standings-body">
+          <!-- populated by JS -->
+        </tbody>
+      </table>
+ 
+      <div id="streams">
+        <div class="panel-heading">Streamer spotlight</div>
+        <div class="spotlight-card">
+          <div class="stream-thumb"><span class="live-dot">LIVE</span><span class="play"></span></div>
+          <div class="spotlight-info">
+            <div class="s-name">kestrel_</div>
+            <div class="s-game">Nova Strike — ranked grind</div>
+            <div class="s-viewers">18,204 viewers</div>
+          </div>
+        </div>
+        <div class="spotlight-card">
+          <div class="stream-thumb"><span class="live-dot">LIVE</span><span class="play"></span></div>
+          <div class="spotlight-info">
+            <div class="s-name">tallow.gg</div>
+            <div class="s-game">Grand Final co-watch</div>
+            <div class="s-viewers">9,732 viewers</div>
+          </div>
+        </div>
+        <div class="spotlight-card">
+          <div class="stream-thumb"><span class="live-dot">LIVE</span><span class="play"></span></div>
+          <div class="spotlight-info">
+            <div class="s-name">ember & co</div>
+            <div class="s-game">Pro POV — Vortex sniper</div>
+            <div class="s-viewers">6,115 viewers</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+ 
+  <section>
+    <div class="section-head"><h2>Tournament so far</h2></div>
+    <div class="ticker-row">
+      <div class="ticker-cell"><div class="t-num">128</div><div class="t-label">Teams entered</div></div>
+      <div class="ticker-cell"><div class="t-num">312</div><div class="t-label">Maps played</div></div>
+      <div class="ticker-cell"><div class="t-num" id="peak-viewers">308K</div><div class="t-label">Peak concurrent viewers</div></div>
+      <div class="ticker-cell"><div class="t-num">4</div><div class="t-label">Days remaining</div></div>
+    </div>
+  </section>
+ <script src="gaming.js"></script>
+</main>
+ 
+<footer class="wrap">
+  <span>Signal Broadcast Desk</span>
+  <span>All teams and matches shown are fictional, for demonstration only</span>
+</footer>
+ 
